@@ -28,7 +28,54 @@ Apparatus Required:
 3.	Perform division using repeated subtraction.
 4.	Store the quotient in 4300H and remainder in 4301H.
 ## Program:
-<img width="862" height="910" alt="image" src="https://github.com/user-attachments/assets/4c9cedd4-22b3-4d9f-9c84-20dfe2a752c1" />
+```asm
+; ---------- ADDITION ----------
+LDA 4150H
+MOV B,A
+LDA 4151H
+ADD B
+STA 4152H
+
+; ---------- SUBTRACTION ----------
+LDA 4150H
+MOV B,A
+LDA 4151H
+SUB B
+STA 4152H
+
+; ---------- MULTIPLICATION ----------
+MVI A,00H
+MVI D,00H
+LXI H,0020H
+MOV B,M
+INX H
+MOV C,M
+MUL_LOOP: ADD B
+JNC NO_CARRY
+INR D
+NO_CARRY: DCR C
+JNZ MUL_LOOP
+STA 0022H
+MOV A,D
+STA 0023H
+
+; ---------- DIVISION ----------
+LXI H,0020H
+MOV A,M
+INX H
+MOV C,M
+MVI D,00H
+DIV_LOOP: CMP C
+JC DIV_END
+SUB C
+INR D
+JMP DIV_LOOP
+DIV_END: STA 0025H
+MOV A,D
+STA 0024H
+
+HLT
+```
 
 ## Output:
 <img width="671" height="339" alt="image" src="https://github.com/user-attachments/assets/39acea5c-79d6-4e42-87e5-070e068ad28b" />
