@@ -28,6 +28,58 @@ Apparatus Required:
 3.	Perform division using repeated subtraction.
 4.	Store the quotient in 4300H and remainder in 4301H.
 ## Program:
+; ---------- ADDITION ----------
+LDA 4150H
+MOV B,A
+LDA 4151H
+ADD B
+STA 4152H
+
+; ---------- SUBTRACTION ----------
+LDA 4150H
+MOV B,A
+LDA 4151H
+SUB B
+STA 4152H
+
+; ---------- MULTIPLICATION ----------
+MVI A,00H
+MVI D,00H
+LXI H,0020H
+MOV B,M
+INX H
+MOV C,M
+MUL_LOOP: ADD B
+JNC NO_CARRY
+INR D
+NO_CARRY: DCR C
+JNZ MUL_LOOP
+STA 0022H
+MOV A,D
+STA 0023H
+
+; ---------- DIVISION ----------
+LXI H,0020H
+MOV A,M
+INX H
+MOV C,M
+MVI D,00H
+DIV_LOOP: CMP C
+JC DIV_END
+SUB C
+INR D
+JMP DIV_LOOP
+DIV_END: STA 0025H
+MOV A,D
+STA 0024H
+
+HLT
 ## Output:
+<img width="671" height="339" alt="image" src="https://github.com/user-attachments/assets/39acea5c-79d6-4e42-87e5-070e068ad28b" />
+<img width="657" height="296" alt="image" src="https://github.com/user-attachments/assets/1a0d4255-c0a3-46f8-9b34-7fd03371d52e" />
+<img width="665" height="304" alt="image" src="https://github.com/user-attachments/assets/39b043e5-87cf-4f81-9fb1-15350dd6d8bf" />
+<img width="649" height="306" alt="image" src="https://github.com/user-attachments/assets/793d0e40-0802-4876-afa2-b72fbc07d519" />
+<img width="649" height="306" alt="image" src="https://github.com/user-attachments/assets/04ebfe30-7810-4bcd-8e21-088f8ae0275d" />
+
 ## Result:
 The 8-bit arithmetic operations using the 8085 microprocessor have been successfully executed and verified using memory access for input and output.
